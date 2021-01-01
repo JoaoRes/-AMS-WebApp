@@ -112,7 +112,7 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 .fh5co-nav .menu-2 li.search {
   float: left;
-  width: 83%;
+  width: 73%;
   font-family: "Playfair Display", serif;
   -webkit-transition: 0.3s;
   -o-transition: 0.3s;
@@ -137,7 +137,7 @@ h1, h2, h3, h4, h5, h6, figure {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 .fh5co-nav .menu-2 li button {
-  margin-top: 4px;
+  margin-top: 0px;
   padding: 5px;
   background: transparent;
   border: none;
