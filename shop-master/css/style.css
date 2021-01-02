@@ -10,6 +10,94 @@
 * 	Template Style 
 *
 * ======================================================= */
+.wrapper{
+  display: flex;
+  position: relative;
+}
+
+.sidebar{
+  position: relative;
+  width: 200px;
+  height: 100%;
+  background: #b3b3b3;
+  padding: 30px 0px;
+  position: fixed;
+}
+
+.sidebar h2{
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar ul li{
+  padding: 15px;
+  border-bottom: 1px solid #bdb8d7;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-top: 1px solid rgba(255,255,255,0.05);
+}    
+
+.sidebar ul li a{
+  color: #ffffff;
+  display: block;
+}
+
+.sidebar ul li a .fas{
+  width: 25px;
+}
+
+.sidebar ul li:hover{
+  background-color: #353535;
+}
+    
+.sidebar ul li:hover a{
+  color: #fff;
+}
+ 
+.social_media{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
+
+.social_media a{
+  display: block;
+  width: 40px;
+  background: #594f8d;
+  height: 40px;
+  line-height: 45px;
+  text-align: center;
+  margin: 0 5px;
+  color: #bdb8d7;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.main_content{
+  width: 100%;
+  margin-left: 200px;
+}
+
+.main_content .header{
+  padding: 20px;
+  background: #fff;
+  color: #717171;
+  border-bottom: 1px solid #e0e4e8;
+}
+
+.main_content .info{
+  margin: 20px;
+  color: #717171;
+  line-height: 25px;
+}
+
+.main_content .info div{
+  margin-bottom: 20px;
+}
+
 body {
   font-family: "Playfair Display", serif;
   font-weight: 400;
@@ -1683,6 +1771,7 @@ h1, h2, h3, h4, h5, h6, figure {
 .js .animate-box {
   opacity: 0;
 }
+
 image {
     float: left;
     width:  300px;
