@@ -1,5 +1,6 @@
 import cherrypy
 import os.path
+from jinja2 import Environment, PackageLoader, select_autoescape
 
 # The absolute path to this file's base directory:
 baseDir = os.path.dirname(os.path.abspath(__file__))
@@ -20,9 +21,22 @@ conf = {
 }
 
 class HelloWorld(object):
+    def __init__(self):
+      self.env = Environment(
+          loader=PackageLoader('app', 'html'),
+          autoescape=select_autoescape(['html', 'xml'])
+      )
+    
+    def render(self, tpg, tps):
+      template = self.env.get_template(tpg)
+      return template.render(tps)
+    
     @cherrypy.expose
     def login(self):
-      return open('html/login.html', 'r')
+      tparams = {
+        'errors': False
+      }
+      return self.render('login.html', tparams)
     
     @cherrypy.expose
     def index(self):
@@ -43,6 +57,16 @@ class HelloWorld(object):
     @cherrypy.expose
     def contact(self):
       return open('html/contact.html', 'r')
+    
+    @cherrypy.expose
+    def shit(self, email=None, password=None):
+      if (email.find('ua.pt') != -1):
+        raise cherrypy.HTTPRedirect("/index")
+
+      tparams = {
+        'errors': True
+      }
+      return self.render('login.html', tparams)
 
 
 
