@@ -99,44 +99,45 @@
 		<div class="container">
 			<div class="row animate-box">
 				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-					<h2>Sign in</h2>
-					<p>If already have an account insert your credentials</p>
+					<h2>Register</h2>
+					<p>Insert your credentials</p>
 					<br>
 					<form method="get">
 						<div class="form-group">
+                            <label for="name" class="sr-only">Username</label>
+							<input type="name" class="form-control" name="name" placeholder="Username">
+                            <label for="address" class="sr-only">Address</label>
+							<input type="address" class="form-control" name="address" placeholder="Address">
 							<label for="email" class="sr-only">Email</label>
 							<input type="email" class="form-control" name="email" placeholder="Email">
 							<label for="pass" class="sr-only">Password</label>
 							<input type="password" class="form-control" name="password" placeholder="Password">
-						</div>
-						<button type="submit" formaction="testlogin" class="btn btn-default btn-block">Sign In</button>
+                        </div>
+						<button type="submit" formaction="testregister" class="btn btn-default btn-block">Register</button>
 					</form>
-					<br><br>
-					<p>OR</p>
-					<br>
-					<a href="main"><button type="submit" class="btn btn-default btn-block"><i class="icon-facebook"></i>    Sign In with Facebook</button></a>
 				</div>
 			</div>
 		</div>
-	</div>
-	{% if errors %}
+    </div>
+    
+	<!--{% if errors %}
 	<script>
 		alert("Please insert a correct username and password");
 	</script>
-	{% endif %}
+	{% endif %}-->
 
-	<div id="fh5co-started">
+	<!--<div id="fh5co-started">
 		<div class="container">
 			<div class="row animate-box">
 				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
 					<h2>Register</h2>
 					<p>If you don't have an account and wish to create one.</p>
 					<br>
-					<a href="register"><button class="btn btn-default btn-block">Register</button></a>
+					<a href="#"><button class="btn btn-default btn-block">Register</button></a>
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>-->
 
 	<footer id="fh5co-footer" role="contentinfo">
 		<div class="container">

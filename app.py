@@ -59,6 +59,10 @@ class HelloWorld(object):
       return open('html/contact.html', 'r')
     
     @cherrypy.expose
+    def register(self):
+      return open('html/register.html', 'r')
+    
+    @cherrypy.expose
     def testlogin(self, email=None, password=None):
       if (email.find('ua.pt') != -1):
         raise cherrypy.HTTPRedirect("/main")
@@ -68,6 +72,9 @@ class HelloWorld(object):
       }
       return self.render('login.html', tparams)
 
+    @cherrypy.expose
+    def testregister(self, name=None, password=None, email=None,  address=None):
+      raise cherrypy.HTTPRedirect("/main")
 
 
 if __name__ == '__main__':
