@@ -32,14 +32,14 @@ class HelloWorld(object):
       return template.render(tps)
     
     @cherrypy.expose
-    def login(self):
+    def index(self):
       tparams = {
         'errors': False
       }
       return self.render('login.html', tparams)
     
     @cherrypy.expose
-    def index(self):
+    def main(self):
         return open('html/index.html', 'r')
     
     @cherrypy.expose
@@ -61,7 +61,7 @@ class HelloWorld(object):
     @cherrypy.expose
     def shit(self, email=None, password=None):
       if (email.find('ua.pt') != -1):
-        raise cherrypy.HTTPRedirect("/index")
+        raise cherrypy.HTTPRedirect("/main")
 
       tparams = {
         'errors': True
