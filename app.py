@@ -59,7 +59,7 @@ class HelloWorld(object):
       return open('html/contact.html', 'r')
     
     @cherrypy.expose
-    def shit(self, email=None, password=None):
+    def testlogin(self, email=None, password=None):
       if (email.find('ua.pt') != -1):
         raise cherrypy.HTTPRedirect("/main")
 
