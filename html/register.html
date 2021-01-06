@@ -115,29 +115,18 @@
                         </div>
 						<button type="submit" formaction="testregister" class="btn btn-default btn-block">Register</button>
 					</form>
+					<br><br><br>
+					<a href="index"><button class="btn btn-default btn-block">Go back</button></a>
 				</div>
 			</div>
 		</div>
-    </div>
-    
-	<!--{% if errors %}
+	</div>
+	
+	{% if errors %}
 	<script>
-		alert("Please insert a correct username and password");
+		alert("Email has already been taken, choose a new one");
 	</script>
-	{% endif %}-->
-
-	<!--<div id="fh5co-started">
-		<div class="container">
-			<div class="row animate-box">
-				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-					<h2>Register</h2>
-					<p>If you don't have an account and wish to create one.</p>
-					<br>
-					<a href="#"><button class="btn btn-default btn-block">Register</button></a>
-				</div>
-			</div>
-		</div>
-	</div>-->
+	{% endif %}
 
 	<footer id="fh5co-footer" role="contentinfo">
 		<div class="container">
