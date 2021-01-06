@@ -38,7 +38,7 @@ def fillDataBase(db):
     unidades = 5
     cond = "Usadas"
     comments = "Apesar se se encontrarem usadas são jantes de muito alta qualidade para elevar o estilo do seu carro a outro nivel"
-    img = '"product-grid" style="background-image:url(images/jante.jpg);"'
+    img = 'images/jante.jpg'
     p = Product(name, price, info0, info1, country, brand, model, weight, unidades, cond, comments, img)
     db.append(p)
     db.append(p)
