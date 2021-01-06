@@ -63,6 +63,10 @@ class HelloWorld(object):
       return open('html/register.html', 'r')
     
     @cherrypy.expose
+    def payment(self):
+      return open('html/payment.html','r')
+    
+    @cherrypy.expose
     def testlogin(self, email=None, password=None):
       if (email.find('ua.pt') != -1):
         raise cherrypy.HTTPRedirect("/main")
