@@ -52,7 +52,7 @@
 	<link rel="stylesheet" href="css/owl.theme.default.min.css">
 
 	<!-- Theme style  -->
-	<link rel="stylesheet" href="css/styles.css">
+	<link rel="stylesheet" href="css/style.css">
 
 	<!-- Modernizr JS -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
@@ -67,69 +67,101 @@
 	<div class="fh5co-loader"></div>
 	
 	<div id="page">
-	
-		<nav class="fh5co-nav" role="navigation">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-3 col-xs-2">
-						<div id="fh5co-logo"><a href="main">AutoBliss</a></div>
-					</div>
-				</div>
-				
-			</div>
-		</nav>
-
-	<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url(images/Spare-Parts-2.jpg);">
-		<div class="overlay"></div>
+	<nav class="fh5co-nav" role="navigation">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-offset-5 text-center">
-					<div class="display-t">
-						<div class="display-tc animate-box" data-animate-effect="fadeIn">
-							<img class="img-responsive" src="images/autobliss.jpeg" alt="Logo">
-						</div>
-					</div>
+				<div class="col-md-3 col-xs-2">
+					<div id="fh5co-logo"><a href="main">AutoBliss</a></div>
+				</div>
+				<div class="col-md-5 col-xs-5 text-center menu-1">
+					<ul>
+						<li><a href="product">Shop</a></li>
+						<li><a href="about">About</a></li>
+						<li><a href="services">Services</a></li>
+						<li><a href="contact">Contact</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
+					<ul>
+						<li class="search">
+							<div class="input-group">
+						      <input type="text" placeholder="Search..">
+						      <span class="input-group-btn">
+						        <button class="btn btn-primary" type="button"><i class="icon-search"></i></button>
+						      </span>
+						    </div>
+						</li>
+						<li class="shopping-cart">
+							<a href="#" class="cart"><span><small>{{num}}</small><i class="icon-shopping-cart"></i></span></a>
+						</li>
+						<li class="has-dropdown"><a href="#"><span><i class="icon-log-out"></i></span></a>
+							<ul class="dropdown">
+								<li><a href="logout">Log out</a></li>
+							</ul>
+						</li>
+					</ul>
 				</div>
 			</div>
+			
 		</div>
-	</header>
+	</nav>
 	
-
-	<div id="fh5co-services" class="fh5co-bg-section">
+	<div id="fh5co-product">
 		<div class="container">
 			<div class="row animate-box">
 				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
-					<h2>Register</h2>
-					<p>Insert your credentials</p>
-					<br>
-					<form method="get">
-						<div class="form-group">
-                            <label for="name" class="sr-only">Username</label>
-							<input type="name" class="form-control" name="name" placeholder="Username">
-                            <label for="address" class="sr-only">Address</label>
-							<input type="address" class="form-control" name="address" placeholder="Address">
-							<label for="email" class="sr-only">Email</label>
-							<input type="email" class="form-control" name="email" placeholder="Email">
-							<label for="pass" class="sr-only">Password</label>
-							<input type="password" class="form-control" name="password" placeholder="Password">
-                        </div>
-						<button type="submit" formaction="testregister" class="btn btn-default btn-block">Register</button>
-					</form>
-					<br><br><br>
-					<a href="index"><button class="btn btn-default btn-block">Go back</button></a>
+					<span>AutoBliss</span>
+					<h2>Produtos adicionados até ao momento</h2>
 				</div>
+			</div>
+			<div class="row">
+                <div id="fh5co-started">
+                    <div class="container">
+                        <div class="row animate-box">
+                            <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+								<h2>Confirmation</h2>
+								{% if carproducts|length > 0 %}
+									{% for p in carproducts %}
+									<button class="btn btn-default btn-block" style="pointer-events: none;">{{p['name']}}, ${{p['price']}}</button>
+									{% endfor %}
+									<br>
+									<button class="btn btn-default btn-block" style="pointer-events: none;">Final price: ${{total}}</button>
+									<br><br><br><br>
+									<a href="payment"><button class="btn btn-default btn-block">Efectuar Pagamento</button></a>
+									<br>
+									<h5>OR</h5>
+									<br>
+									<a href="empty"><button class="btn btn-default btn-block">Esvaziar o carrinho de compras</button></a>
+								{%else%}
+								<button class="btn btn-default btn-block" style="pointer-events: none;">Carrinho está vazio</button>
+								{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
 			</div>
 		</div>
 	</div>
-	
-	{% if errors %}
-	<script>
-		alert("Email has already been taken, choose a new one");
-	</script>
-	{% endif %}
 
 	<footer id="fh5co-footer" role="contentinfo">
 		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-4 fh5co-widget">
+					<h3>AutoBliss</h3>
+					<p>A AutoBliss é uma aplicação desenvolvida no âmbito da unidade corricular
+						de Análise e Modelação de Sistemas, do curso Engenharia de Computadores e 
+						Telemática da Universidade de Aveiro.
+					</p>
+				</div>
+				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
+					<ul class="fh5co-footer-links">
+						<li><a href="about">About</a></li>
+						<li><a href="contact">Contact</a></li>
+						<li><a href="product">Shop</a></li>
+					</ul>
+				</div>
+			</div>
+
 			<div class="row copyright">
 				<div class="col-md-12 text-center">
 					<p>

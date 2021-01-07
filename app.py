@@ -9,6 +9,8 @@ from client import *
 clientDatabase = []
 #lista com todas as informações de todos os produtos
 productsDatabase = []
+#Lista com os produtos presentes no carrinho
+productsCar = []
 
 fillDataBase(productsDatabase)
 
@@ -17,7 +19,11 @@ baseDir = os.path.dirname(os.path.abspath(__file__))
 
 #Dicionário com a configuração da aplicação
 conf = {
-  "/":     { "tools.staticdir.root": baseDir },
+  'global': {'tools.sessions.on': True,
+            'server.socket_host': '0.0.0.0',
+            'server.socket_port': int(os.environ.get('PORT', 5000)), },
+  "/":     {'tools.sessions.on': True, 
+            "tools.staticdir.root": baseDir },
   "/js":   { "tools.staticdir.on": True,
              "tools.staticdir.dir": "js" },
   "/css":  { "tools.staticdir.on": True,
@@ -29,6 +35,7 @@ conf = {
   "/fonts":{ "tools.staticdir.on": True,
              "tools.staticdir.dir": "fonts" },
 }
+
 
 class HelloWorld(object):
     def __init__(self):
@@ -49,27 +56,48 @@ class HelloWorld(object):
       return self.render('login.html', tparams)
     
     @cherrypy.expose
+    def logout(self):
+      productsCar.clear()
+      tparams = {
+        'errors': False
+      }
+      return self.render('login.html', tparams)
+
+    @cherrypy.expose
     def main(self):
-        return open('html/index.html', 'r')
+      tparams = {
+        'num': len(productsCar)
+      }
+      return self.render('index.html', tparams)
     
     @cherrypy.expose
     def product(self):
       tparams = {
-        'products': productsDatabase
+        'products': productsDatabase,
+        'num': len(productsCar)
       }
       return self.render('product.html', tparams)
     
     @cherrypy.expose
     def services(self):
-      return open('html/services.html', 'r')
+      tparams = {
+        'num': len(productsCar)
+      }
+      return self.render('services.html', tparams)
     
     @cherrypy.expose
     def about(self):
-      return open('html/about.html', 'r')
+      tparams = {
+        'num': len(productsCar)
+      }
+      return self.render('about.html', tparams)
     
     @cherrypy.expose
     def contact(self):
-      return open('html/contact.html', 'r')
+      tparams = {
+        'num': len(productsCar)
+      }
+      return self.render('contact.html', tparams)
     
     @cherrypy.expose
     def register(self):
@@ -112,22 +140,66 @@ class HelloWorld(object):
 
     
     @cherrypy.expose
-    def single(self):
+    def single(self, pn=None):
+      for p in productsDatabase:
+        if pn == p.name:
+          tparams = {
+            'productname': p.name,
+            'price': p.price,
+            'productinfo': p.info0,
+            'productinfo2': p.info1,
+            'country': p.country,
+            'marca': p.brand,
+            'modelo': p.model,
+            'peso': p.weight,
+            'unidades': p.unidades,
+            'cond': p.cond,
+            'comments': p.comments,
+            'imgsrc': p.img,
+            'num': len(productsCar)
+          }
+          return self.render('single.html', tparams)
+      return None
+
+    @cherrypy.expose
+    def additem(self, pname=None):
+      for p in productsDatabase:
+        if pname == p.name:
+          productsCar.append(p)
       tparams = {
-        'productname': "Radio",
-        'price': 4500,
-        'productinfo': "A nice yellow radio for your beautifull car",
-        'productinfo2': "10 stations, loud speakers, quality sound and other things",
-        'country': 'EUA',
-        'marca': 'pioneer',
-        'modelo': 'XR87',
-        'peso': 12,
-        'unidades': 9,
-        'cond': 'Novo',
-        'comments': "O fabricante desta peça recomenda que não a use em certos modelos",
-        'imgsrc': "images/product-single-1.jpg"
+        'products': productsDatabase,
+        'num': len(productsCar)
       }
-      return self.render('single.html', tparams)
+      return self.render('product.html', tparams)
+
+    @cherrypy.expose
+    def cart(self):
+      total = 0
+      for product in productsCar:
+        total+=product.price
+      tparams = {
+        'carproducts': productsCar,
+        'total': total,
+        'num': len(productsCar)
+      }
+      return self.render('cart.html', tparams)
+
+    @cherrypy.expose
+    def empty(self):
+      productsCar.clear()
+      tparams = {
+        'num': len(productsCar)
+      }
+      return self.render('cart.html', tparams)
+    
+    @cherrypy.expose
+    def payment_done(self, firstname=None, email=None, address=None, city=None, state=None, zip=None, cardname=None, cardnumber=None, expmonth=None, expyear=None, cvv=None, sameadr=None):
+      productsCar.clear()
+      tparams = {
+        'num': len(productsCar)
+      }
+      return self.render('done.html', tparams)
 
 if __name__ == '__main__':
+    cherrypy.config.update({'server.socket_host': '127.0.0.1'})
     cherrypy.quickstart(HelloWorld(), "/", conf)
