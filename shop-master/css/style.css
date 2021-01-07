@@ -12,6 +12,8 @@
 * ======================================================= */
 
 /*--------------------------------------*/
+
+
 .wrapper{
   display: flex;
   position: relative;
@@ -111,6 +113,10 @@ body {
   line-height: 1.7;
   color: #828282;
   background: #fff;
+}
+
+.boxed {
+  border: 1px solid black ;
 }
 
 #page {
