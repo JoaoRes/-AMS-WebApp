@@ -109,7 +109,7 @@ class HelloWorld(object):
     @cherrypy.expose
     def oficina(self):
       tparams = {
-        'errors': False
+        'num': len(productsCar)
       }
       return self.render('oficina.html', tparams)
     
