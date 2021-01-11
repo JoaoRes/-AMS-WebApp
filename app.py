@@ -206,6 +206,14 @@ class HelloWorld(object):
         'num': len(productsCar)
       }
       return self.render('done.html', tparams)
+    
+    @cherrypy.expose
+    def user(self):
+      productsCar.clear()
+      tparams = {
+        'num': len(productsCar)
+      }
+      return self.render('user.html', tparams)
 
 if __name__ == '__main__':
     cherrypy.config.update({'server.socket_host': '127.0.0.1'})
