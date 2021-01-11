@@ -107,6 +107,13 @@ class HelloWorld(object):
       return self.render('register.html', tparams)
     
     @cherrypy.expose
+    def oficina(self):
+      tparams = {
+        'errors': False
+      }
+      return self.render('oficina.html', tparams)
+    
+    @cherrypy.expose
     def testlogin(self, email=None, password=None):
       valid = False
       for client in clientDatabase:
