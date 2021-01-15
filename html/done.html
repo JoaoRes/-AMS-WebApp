@@ -94,9 +94,14 @@
 							<li class="shopping-cart">
 								<a href="cart" class="cart"><span><small>{{num}}</small><i class="icon-shopping-cart"></i></span></a>
 							</li>
-							<li class="has-dropdown"><a href="#"><span><i class="icon-log-out"></i></span></a>
+							<li class="has-dropdown"><a href="#"><span><i class="icon-cog"></i></span></a>
 								<ul class="dropdown">
-									<li><a href="index">Log out</a></li>
+									{% if auth %}
+									<li><a href="user">Profile</a></li>
+									<li><a href="index">{{login}}</a></li>
+									{% else %}
+									<li><a href="index">{{login}}</a></li>
+									{% endif %}
 								</ul>
 							</li>
 						</ul>
