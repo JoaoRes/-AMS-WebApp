@@ -1,6 +1,8 @@
 import cherrypy
 import os.path
 from jinja2 import Environment, PackageLoader, select_autoescape
+import requests;
+import os;
 
 from client import *
 
@@ -71,14 +73,38 @@ class HelloWorld(object):
     
     @cherrypy.expose
     def product(self):
+      if 'auth' not in cherrypy.session:
+       cherrypy.session['auth'] = False
+       cherrypy.session['productsCar'] = []
+    
+      res = requests.get('https://dry-meadow-84562.herokuapp.com/api/product/suggestions')
+      #print(res.json()['parts']) # arrray de produtos
+
       tparams = {
-        'products': productsDatabase,
+        'products': res.json()['parts'],
         'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
         'auth': True if cherrypy.session['auth'] else False,
         'login': "Log Out" if cherrypy.session['auth'] else "Log In"
       }
       return self.render('product.html', tparams)
     
+    @cherrypy.expose
+    def search(self, query):
+      if 'auth' not in cherrypy.session:
+       cherrypy.session['auth'] = False
+       cherrypy.session['productsCar'] = []
+
+      res = requests.post('https://dry-meadow-84562.herokuapp.com/api/product/search', json={'query':query})
+
+      print(res.json())
+
+      tparams = {
+        'products': res.json()['results'],
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
+      }
+      return self.render('product.html', tparams)
     @cherrypy.expose
     def services(self):
       tparams = {

@@ -130,6 +130,11 @@
 			</div>
 		</header>
 
+		<form action="/search" method="post">
+			<input type="search" name="query" id="searchQuery">
+			<input type="submit" value="Search">
+		</form>
+
 		<div id="fh5co-product">
 			<div class="container">
 				<div class="row animate-box">
@@ -150,7 +155,7 @@
 								<div class="inner">
 									<p>
 										<a href="/additem?pname={{p['name']}}" class="icon"><i class="icon-shopping-cart"></i></a>
-										<a href="/single?pn={{p['name']}}" class="icon"><i class="icon-eye"></i></a>
+										<a href="/single?pn={{p['id']}}" class="icon"><i class="icon-eye"></i></a>
 										<a href="#" class="icon"><i class="icon-bell"></i></a>
 									</p>
 								</div>
