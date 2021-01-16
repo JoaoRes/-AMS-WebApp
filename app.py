@@ -228,15 +228,17 @@ class HelloWorld(object):
       if not cherrypy.session['auth']:
         raise cherrypy.HTTPRedirect("/main")
       
-      tparams = {
-        'num': len(cherrypy.session['productsCar']),
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
-        'auth': True if cherrypy.session['auth'] else False
-      }
-      return self.render('user.html', tparams)
-
-
-
+      for c in clientDatabase:
+        if c.username == cherrypy.session['user']['username']:      
+          tparams = {
+            'num': len(cherrypy.session['productsCar']),
+            'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+            'auth': True if cherrypy.session['auth'] else False,
+            'username': c.username,
+            'email': c.email,
+            'address': c.address
+          }
+          return self.render('user.html', tparams)
 
 if __name__ == '__main__':
     cherrypy.config.update({'server.socket_host': '127.0.0.1'})
