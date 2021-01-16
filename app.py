@@ -57,6 +57,12 @@ class HelloWorld(object):
       return self.render('login.html', tparams)
     
     @cherrypy.expose
+    def login(self):
+      cherrypy.session['auth'] = True
+      cherrypy.session['productsCar'] = []
+      raise cherrypy.HTTPRedirect("/product")
+
+    @cherrypy.expose
     def logout(self):
       cherrypy.session['auth'] = False
       cherrypy.session['productsCar'].clear()
@@ -75,7 +81,6 @@ class HelloWorld(object):
     def product(self):
       if 'auth' not in cherrypy.session:
        cherrypy.session['auth'] = False
-       cherrypy.session['productsCar'] = []
     
       res = requests.get('https://dry-meadow-84562.herokuapp.com/api/product/suggestions')
       #print(res.json()['parts']) # arrray de produtos
@@ -92,7 +97,7 @@ class HelloWorld(object):
     def search(self, query):
       if 'auth' not in cherrypy.session:
        cherrypy.session['auth'] = False
-       cherrypy.session['productsCar'] = []
+       
 
       res = requests.post('https://dry-meadow-84562.herokuapp.com/api/product/search', json={'query':query})
 
@@ -105,6 +110,7 @@ class HelloWorld(object):
         'login': "Log Out" if cherrypy.session['auth'] else "Log In"
       }
       return self.render('product.html', tparams)
+      
     @cherrypy.expose
     def services(self):
       tparams = {
@@ -208,13 +214,11 @@ class HelloWorld(object):
       return None
 
     @cherrypy.expose
-    def additem(self, pname=None):
+    def additem(self, pid=None):
       if not cherrypy.session['auth']:
         raise cherrypy.HTTPRedirect("/product")
 
-      for p in productsDatabase:
-        if pname == p.name:
-          cherrypy.session['productsCar'].append(p)
+      cherrypy.session['productsCar'].append(pid)
       raise cherrypy.HTTPRedirect("/product")
 
     @cherrypy.expose
@@ -223,10 +227,15 @@ class HelloWorld(object):
         raise cherrypy.HTTPRedirect("/main")
 
       total = 0
-      for product in cherrypy.session['productsCar']:
-        total+=product.price
+      product = []
+      for pid in cherrypy.session['productsCar']:
+        res = requests.post('https://dry-meadow-84562.herokuapp.com/api/product/part', json=({'id':pid}))
+        p = res.json()['part']
+        print(p)
+        total+=int(p['price'])
+        product.append(p)
       tparams = {
-        'carproducts': cherrypy.session['productsCar'],
+        'carproducts': product,
         'total': total,
         'num': len(cherrypy.session['productsCar']),
         'auth': True if cherrypy.session['auth'] else False,
