@@ -85,12 +85,14 @@
 				<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
 					<ul>
 						<li class="search">
-							<div class="input-group">
-						      <input type="text" placeholder="Search..">
-						      <span class="input-group-btn">
-						        <button class="btn btn-primary" type="button"><i class="icon-search"></i></button>
-						      </span>
-						    </div>
+							<form action="/search" method="post">
+								<div class="input-group">
+									<input type="text" name="query" id="searchQuery" placeholder="Search..">
+									<span class="input-group-btn">
+										<button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+									</span>
+								</div>
+							</form>
 						</li>
 						<li class="shopping-cart">
 							<a href="#" class="cart"><span><small>{{num}}</small><i class="icon-shopping-cart"></i></span></a>
