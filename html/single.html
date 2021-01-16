@@ -151,7 +151,7 @@
 						<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
 							<h2>{{productname}}</h2>
 							<p>
-								<a href="/additem?pname={{productname}}" class="btn btn-primary btn-outline btn-lg">Add to Cart</a>
+								<a href="/additem?pid={{pid}}" class="btn btn-primary btn-outline btn-lg">Add to Cart</a>
 							</p>
 						</div>
 					</div>
@@ -177,7 +177,6 @@
 									<h2>{{productname}}</h2>
 									
 									<p>{{productinfo}}</p>
-									<p>{{productinfo2}}</p>
 
 								</div>
 							</div>
@@ -201,9 +200,22 @@
 									<h3>Comments</h3>
 									<div class="feed">
 										<div>
+											{% if auth %}
 											<blockquote>
-												<p>{{comments}}</p>
+												<form action="/addComment" method="post">
+													<input hidden type="number" name="pid" value="{{pid}}">
+													<input type="text" name="value" placeholder="Adiciona um Comentario">
+													<input type="submit" value="Enviar">
+												</form>
 											</blockquote>
+											{% endif %}
+											
+											{% for c in comments %}
+												<blockquote>
+													<p>{{c['userName']}}</p>
+													<p>{{c['content']}}</p>
+												</blockquote>
+											{% endfor %}
 											<!--<h3>&mdash; Louie Knight</h3>
 											<span class="rate">
 												<i class="icon-star2"></i>
