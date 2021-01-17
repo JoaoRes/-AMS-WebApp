@@ -298,7 +298,7 @@ class HelloWorld(object):
     @cherrypy.expose
     def cart(self):
       if not cherrypy.session['auth']:
-        raise cherrypy.HTTPRedirect("/main")
+        raise cherrypy.HTTPRedirect("/login")
 
       total = 0
       product = []
@@ -347,7 +347,7 @@ class HelloWorld(object):
     @cherrypy.expose
     def user(self):
       if not cherrypy.session['auth']:
-        raise cherrypy.HTTPRedirect("/main")
+        raise cherrypy.HTTPRedirect("/login")
       
       for c in clientDatabase:
         if c.username == cherrypy.session['user']['username']:      
@@ -366,10 +366,10 @@ class HelloWorld(object):
     @cherrypy.expose
     def vendor(self):
       if 'auth' not in cherrypy.session or not cherrypy.session['auth']:
-        raise cherrypy.HTTPRedirect("/main")
+        raise cherrypy.HTTPRedirect("/")
 
       if cherrypy.session['role'] != 'vendor':
-        raise cherrypy.HTTPRedirect("/main")
+        raise cherrypy.HTTPRedirect("/")
       
       partsReq= requests.get(apiDomain+'/product/vendorProducts',headers={"Authorization":cherrypy.session['token']})
       ps = partsReq.json()['parts']
