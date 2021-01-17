@@ -158,6 +158,7 @@ class HelloWorld(object):
       cherrypy.session['auth'] = True
       cherrypy.session['token'] = data['authToken']
       cherrypy.session['role'] = data['user']['role']
+      cherrypy.session['user'] = data['user']
       cherrypy.session['productsCar'] = []
       raise cherrypy.HTTPRedirect("/product")
 
@@ -349,18 +350,16 @@ class HelloWorld(object):
     def user(self):
       if not cherrypy.session['auth']:
         raise cherrypy.HTTPRedirect("/login")
-      
-      for c in clientDatabase:
-        if c.username == cherrypy.session['user']['username']:      
-          tparams = {
+      tparams = {
             'num': len(cherrypy.session['productsCar']),
             'login': "Log Out" if cherrypy.session['auth'] else "Log In",
             'auth': True if cherrypy.session['auth'] else False,
-            'username': c.username,
-            'email': c.email,
-            'address': c.address
+            'username':  cherrypy.session['user']['name'],
+            'email': cherrypy.session['user']['email']
+            #'address': c.address
           }
-          return self.render('user.html', tparams)
+
+      return self.render('user.html', tparams)
     
     # VENDEDORES #
     # pages
