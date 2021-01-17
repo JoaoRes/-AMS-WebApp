@@ -67,52 +67,55 @@
 	<div class="fh5co-loader"></div>
 	
 	<div id="page">
-	<nav class="fh5co-nav" role="navigation">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3 col-xs-2">
-					<div id="fh5co-logo"><a href="main">AutoBliss</a></div>
+		<nav class="fh5co-nav" role="navigation">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-3 col-xs-2">
+						<div id="fh5co-logo"><a href="/">AutoBliss</a></div>
+					</div>
+					<div class="col-md-5 col-xs-5 text-center menu-1">
+						<ul>
+							<li><a href="product">Products</a></li>
+							<li><a href="oficina">Car Shops</a></li>
+							<li><a href="about">About</a></li>
+							<li><a href="services">Services</a></li>
+							<li><a href="contact">Contact</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
+						<ul>
+							<li class="search">
+								<form action="/search" method="post">
+									<div class="input-group">
+										<input type="text" name="query" id="searchQuery" placeholder="Search..">
+										<span class="input-group-btn">
+											<button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+										</span>
+									</div>
+								</form>
+							</li>
+							<li class="shopping-cart">
+								<a href="#" class="cart"><span><small>{{num}}</small><i class="icon-shopping-cart"></i></span></a>
+							</li>
+							<li class="has-dropdown"><a href="#"><span><i class="icon-cog"></i></span></a>
+								<ul class="dropdown">
+									{% if auth %}
+									<li><a href="user">Profile</a></li>
+									{% if role == "vendor" %}
+									<li><a href="vendor">Dashboard</a></li>
+									{% endif %}
+									<li><a href="/logout">{{login}}</a></li>
+									{% else %}
+									<li><a href="/login">{{login}}</a></li>
+									{% endif %}
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</div>
-				<div class="col-md-5 col-xs-5 text-center menu-1">
-					<ul>
-						<li><a href="product">Products</a></li>
-						<li><a href="oficina">Car-shops</a></li>
-						<li><a href="about">About</a></li>
-						<li class="has-dropdown active">
-							<a href="services">Services</a>
-						</li>
-						<li><a href="contact">Contact</a></li>
-					</ul>
-				</div>
-				<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
-					<ul>
-						<li class="search">
-							<form action="/search" method="post">
-								<div class="input-group">
-									<input type="text" name="query" id="searchQuery" placeholder="Search..">
-									<span class="input-group-btn">
-										<button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-									</span>
-								</div>
-							</form>
-						</li>
-						<li class="shopping-cart"><a href="cart" class="cart"><span><small>{{num}}</small><i class="icon-shopping-cart"></i></span></a></li>
-						<li class="has-dropdown"><a href="#"><span><i class="icon-cog"></i></span></a>
-							<ul class="dropdown">
-								{% if auth %}
-								<li><a href="user">Profile</a></li>
-								<li><a href="index">{{login}}</a></li>
-								{% else %}
-								<li><a href="index">{{login}}</a></li>
-								{% endif %}
-							</ul>
-						</li>	
-					</ul>
-				</div>
+				
 			</div>
-			
-		</div>
-	</nav>
+		</nav>
 
 	<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url(images/Spare-Parts-2.jpg);">
 		<div class="overlay"></div>

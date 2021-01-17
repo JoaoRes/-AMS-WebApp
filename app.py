@@ -53,21 +53,101 @@ class HelloWorld(object):
       template = self.env.get_template(tpg)
       return template.render(tps)
     
+    # MAIN PAGES #
     @cherrypy.expose
     def index(self):
+      if 'auth' not in cherrypy.session:
+       cherrypy.session['auth'] = False
+       cherrypy.session['role'] = ""
+      tparams = {
+        #'errors': False
+      }
+      tparams = {
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
+      }
+      #return self.render('login.html', tparams)
+      return self.render('index.html', tparams)
+    
+    @cherrypy.expose
+    def main(self):
+      tparams = {
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
+      }
+      raise cherrypy.HTTPRedirect("/")
+    
+    @cherrypy.expose
+    def product(self):
+      if 'auth' not in cherrypy.session:
+       cherrypy.session['auth'] = False
+    
+      res = requests.get('https://dry-meadow-84562.herokuapp.com/api/product/suggestions')
+      #print(res.json()['parts']) # arrray de produtos
+
+      tparams = {
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
+      }
+      return self.render('product.html', tparams)
+    
+    @cherrypy.expose
+    def services(self):
+      tparams = {
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
+      }
+      return self.render('services.html', tparams)
+    
+    @cherrypy.expose
+    def about(self):
+      tparams = {
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
+      }
+      return self.render('about.html', tparams)
+    
+    @cherrypy.expose
+    def contact(self):
+      tparams = {
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
+      }
+      return self.render('contact.html', tparams)
+    
+    # AUTH #
+    #pages
+    @cherrypy.expose
+    def login(self):
+      tparams = {
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
+      }
+      return self.render('login.html', tparams)
+
+    @cherrypy.expose
+    def register(self):
       cherrypy.session['auth'] = False
       tparams = {
         'errors': False
       }
-      return self.render('login.html', tparams)
-    
-    @cherrypy.expose
-    def login(self):
-      cherrypy.session['auth'] = True
-      cherrypy.session['role'] = 'vendor'
-      cherrypy.session['productsCar'] = []
-      raise cherrypy.HTTPRedirect("/product")
+      return self.render('register.html', tparams)
 
+    #actions
     @cherrypy.expose
     def doLogin(self, email, password):
 
@@ -84,7 +164,7 @@ class HelloWorld(object):
     def logout(self):
       cherrypy.session['auth'] = False
       cherrypy.session['productsCar'].clear()
-      raise cherrypy.HTTPRedirect("/index")
+      raise cherrypy.HTTPRedirect("/")
 
     @cherrypy.expose
     def doRegister(self, name, email, password, isVendor='no'):
@@ -97,31 +177,7 @@ class HelloWorld(object):
 
       raise cherrypy.HTTPRedirect("/product")
 
-    @cherrypy.expose
-    def main(self):
-      tparams = {
-        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
-        'auth': True if cherrypy.session['auth'] else False,
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
-      }
-      return self.render('index.html', tparams)
-    
-    @cherrypy.expose
-    def product(self):
-      if 'auth' not in cherrypy.session:
-       cherrypy.session['auth'] = False
-    
-      res = requests.get('https://dry-meadow-84562.herokuapp.com/api/product/suggestions')
-      #print(res.json()['parts']) # arrray de produtos
-
-      tparams = {
-        'products': res.json()['parts'],
-        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
-        'auth': True if cherrypy.session['auth'] else False,
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
-      }
-      return self.render('product.html', tparams)
-    
+    # PRODUTOS #
     @cherrypy.expose
     def search(self, query):
       if 'auth' not in cherrypy.session:
@@ -130,100 +186,16 @@ class HelloWorld(object):
 
       res = requests.post('https://dry-meadow-84562.herokuapp.com/api/product/search', json={'query':query})
 
-      print(res.json())
 
       tparams = {
         'products': res.json()['results'],
         'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
         'auth': True if cherrypy.session['auth'] else False,
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
       }
       return self.render('product.html', tparams)
-      
-    @cherrypy.expose
-    def services(self):
-      tparams = {
-        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
-        'auth': True if cherrypy.session['auth'] else False,
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
-      }
-      return self.render('services.html', tparams)
-    
-    @cherrypy.expose
-    def about(self):
-      tparams = {
-        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
-        'auth': True if cherrypy.session['auth'] else False,
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
-      }
-      return self.render('about.html', tparams)
-    
-    @cherrypy.expose
-    def contact(self):
-      tparams = {
-        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
-        'auth': True if cherrypy.session['auth'] else False,
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
-      }
-      return self.render('contact.html', tparams)
-    
-    @cherrypy.expose
-    def register(self):
-      cherrypy.session['auth'] = False
-      tparams = {
-        'errors': False
-      }
-      return self.render('register.html', tparams)
-    
-    @cherrypy.expose
-    def oficina(self, fname=None, lname=None, email=None, subject=None, message=None):
-      errors = False
-      if fname == "" or lname == "" or email == "" or subject == "" or message == "":
-        errors = True
 
-      tparams = {
-        'errors': errors,
-        'shops': shopsDatabase,
-        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
-        'auth': True if cherrypy.session['auth'] else False,
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
-      }
-      return self.render('oficina.html', tparams)
-  
-    @cherrypy.expose
-    def testlogin(self, email=None, password=None):
-      for client in clientDatabase:
-        if client.email == email and client.password == password:
-          cherrypy.session['auth'] = True
-          cherrypy.session['user'] = {'username': client.username, 'email': client.email, 'role': "client"}
-          raise cherrypy.HTTPRedirect("/main")
-
-      tparams = {
-        'errors': True
-      }
-      return self.render('login.html', tparams)
-
-    @cherrypy.expose
-    def testregister(self, name=None, password=None, email=None,  address=None):
-      c = Client(name, address, email, password)
-      
-      if c in clientDatabase:
-        tparams = {
-          'errors': True
-        }
-        return self.render('register.html', tparams)
-      else:
-        cherrypy.session['auth'] = True
-        cherrypy.session['productsCar'] = []
-        cherrypy.session['user'] = {'username': name, 'email': email, 'role': "client"}
-        clientDatabase.append(c)
-        raise cherrypy.HTTPRedirect("/main")
-
-    @cherrypy.expose
-    def payment(self):
-      return open('html/payment.html', 'r')
-
-    
     @cherrypy.expose
     def single(self, pid):
       if 'auth' not in cherrypy.session:
@@ -250,11 +222,47 @@ class HelloWorld(object):
         #'comments': c,
         'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
         'auth': True if cherrypy.session['auth'] else False,
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
       }
       
       return self.render('single.html', tparams)
 
+    @cherrypy.expose
+    def subNotification(self, pid):
+      if 'auth' not in cherrypy.session:
+       cherrypy.session['auth'] = False
+      
+      #redirects to login page
+      if not cherrypy.session['auth']:
+        raise cherrypy.HTTPRedirect('/')
+
+      newsub = {
+        'partId': int(pid)
+      }
+
+      print (newsub)
+
+      sReq= requests.put(apiDomain+'/subscription', json=newsub, headers={"Authorization":cherrypy.session['token']})
+      
+      raise cherrypy.HTTPRedirect('/single?pid='+pid)   
+
+    # OFICINAS #
+    @cherrypy.expose
+    def oficina(self, fname=None, lname=None, email=None, subject=None, message=None):
+      errors = False
+      if fname == "" or lname == "" or email == "" or subject == "" or message == "":
+        errors = True
+
+      tparams = {
+        'errors': errors,
+        'shops': shopsDatabase,
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
+      }
+      return self.render('oficina.html', tparams)
 
     @cherrypy.expose
     def singleShop(self, sn=None):
@@ -272,27 +280,12 @@ class HelloWorld(object):
             'imgsrc': p.img,
             'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
             'auth': True if cherrypy.session['auth'] else False,
-            'login': "Log Out" if cherrypy.session['auth'] else "Log In"
+            'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+            'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
           }
           return self.render('singleShop.html', tparams)
       return None
-
-
-
-
-    @cherrypy.expose
-    def subNotification(self, pid):
-      if 'auth' not in cherrypy.session:
-       cherrypy.session['auth'] = False
-      
-      #redirects to login page
-      if not cherrypy.session['auth']:
-        raise cherrypy.HTTPRedirect('/')
-      
-      #needs auth
-      #sReq= requests.put(apiDomain+'/subscription', json={'partId':pid}, headers={"Authorization":cherrypy.session['token']})
-      
-      raise cherrypy.HTTPRedirect('/single?pid='+pid)   
+    # CART #
 
     @cherrypy.expose
     def additem(self, pid=None):
@@ -320,8 +313,10 @@ class HelloWorld(object):
         'total': total,
         'num': len(cherrypy.session['productsCar']),
         'auth': True if cherrypy.session['auth'] else False,
-        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'role': cherrypy.session['role'] if cherrypy.session['role'] else ''
       }
+     
       return self.render('cart.html', tparams)
 
     @cherrypy.expose
@@ -329,6 +324,16 @@ class HelloWorld(object):
       cherrypy.session['productsCar'].clear()
       raise cherrypy.HTTPRedirect("/cart")
     
+    # PAGAMENTOS #
+
+    @cherrypy.expose
+    def payment(self):
+      return open('html/payment.html', 'r')
+
+
+    
+
+
     @cherrypy.expose
     def payment_done(self, firstname=None, email=None, address=None, city=None, state=None, zip=None, cardname=None, cardnumber=None, expmonth=None, expyear=None, cvv=None, sameadr=None):
       cherrypy.session['productsCar'].clear()
@@ -356,6 +361,8 @@ class HelloWorld(object):
           }
           return self.render('user.html', tparams)
     
+    # VENDEDORES #
+    # pages
     @cherrypy.expose
     def vendor(self):
       if 'auth' not in cherrypy.session or not cherrypy.session['auth']:
@@ -394,6 +401,7 @@ class HelloWorld(object):
       }
       return self.render('edit.html', tparams)
 
+    # actions
     @cherrypy.expose
     def addVendorPart(self, name, description, country, brand, model, condition, price, quantity, makerId, ean):
       newPart = {
@@ -427,6 +435,7 @@ class HelloWorld(object):
         'makerId':makerId,
         'ean':ean
       }
+      print(part)
       updateReq= requests.put(apiDomain+'/product/vendorProducts',headers={"Authorization":cherrypy.session['token']}, json=part )
       raise cherrypy.HTTPRedirect("/vendor")
     
