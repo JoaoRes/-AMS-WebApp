@@ -65,10 +65,33 @@ class HelloWorld(object):
       raise cherrypy.HTTPRedirect("/product")
 
     @cherrypy.expose
+    def doLogin(self, email, password):
+
+      authReq = requests.post(apiDomain+'/auth/login', json={'email':email, 'password':password})
+      data = authReq.json()
+
+      cherrypy.session['auth'] = True
+      cherrypy.session['token'] = data['authToken']
+      cherrypy.session['role'] = data['user']['role']
+      cherrypy.session['productsCar'] = []
+      raise cherrypy.HTTPRedirect("/product")
+
+    @cherrypy.expose
     def logout(self):
       cherrypy.session['auth'] = False
       cherrypy.session['productsCar'].clear()
       raise cherrypy.HTTPRedirect("/index")
+
+    @cherrypy.expose
+    def doRegister(self, name, email, password, isVendor='no'):
+
+      role = 'user'
+      if isVendor and isVendor == 'on':
+        role = 'vendor'
+      authReq = requests.post(apiDomain+'/auth/signup', json={'name': name, 'email':email, 'password':password, 'role':role})
+      data = authReq.json()
+
+      raise cherrypy.HTTPRedirect("/product")
 
     @cherrypy.expose
     def main(self):
@@ -297,6 +320,85 @@ class HelloWorld(object):
             'address': c.address
           }
           return self.render('user.html', tparams)
+    
+    @cherrypy.expose
+    def vendor(self):
+      if 'auth' not in cherrypy.session or not cherrypy.session['auth']:
+        raise cherrypy.HTTPRedirect("/main")
+
+      if cherrypy.session['role'] != 'vendor':
+        raise cherrypy.HTTPRedirect("/main")
+      
+      partsReq= requests.get(apiDomain+'/product/vendorProducts',headers={"Authorization":cherrypy.session['token']})
+      ps = partsReq.json()['parts']
+
+      return self.render('vendor.html', {'products':ps})
+
+    @cherrypy.expose
+    def edit(self, pid):
+      pReq = requests.post(apiDomain+'/product/part', json={'id':pid})
+      p = pReq.json()['part']
+      
+      tparams = {
+        'pid':pid,
+        'productname': p['name'],
+        'price': p['price'],
+        'description': p['description'],
+        'country': p['country'],
+        'marca': p['brand'],
+        'modelo': p['model'],
+        #'peso': p['weight'],
+        'unidades':int(p['quantity']),
+        'cond': p['condition'],
+        'imgsrc': p['imgUrl'],
+        'makerId': p['makerId'],
+        'ean': p['ean'],
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
+      }
+      return self.render('edit.html', tparams)
+
+    @cherrypy.expose
+    def addVendorPart(self, name, description, country, brand, model, condition, price, quantity, makerId, ean):
+      newPart = {
+        'name':name,
+        'description':description,
+        'country':country,
+        'brand':brand,
+        'model':model,
+        'condition':condition,
+        'price':price,
+        'quantity':quantity,
+        'makerId':makerId,
+        'ean':ean
+      }
+
+      addReq= requests.post(apiDomain+'/product/vendorProducts',headers={"Authorization":cherrypy.session['token']}, json=newPart ) 
+      raise cherrypy.HTTPRedirect("/vendor")
+    
+    @cherrypy.expose
+    def updateVendorPart(self, pid, name, description, country, brand, model, condition, price, quantity, makerId, ean): 
+      part = {
+        'id':int (pid),
+        'name':name,
+        'description':description,
+        'country':country,
+        'brand':brand,
+        'model':model,
+        'condition':condition,
+        'price':price,
+        'quantity':quantity,
+        'makerId':makerId,
+        'ean':ean
+      }
+      updateReq= requests.put(apiDomain+'/product/vendorProducts',headers={"Authorization":cherrypy.session['token']}, json=part )
+      raise cherrypy.HTTPRedirect("/vendor")
+    
+    @cherrypy.expose
+    def delVendorPart(self, pid):
+      delReq= requests.post(apiDomain+'/product/deleteVendorProducts', json={'id':pid}, headers={"Authorization":cherrypy.session['token']}) 
+      raise cherrypy.HTTPRedirect("/vendor")
 
 if __name__ == '__main__':
     cherrypy.config.update({'server.socket_host': '127.0.0.1'})

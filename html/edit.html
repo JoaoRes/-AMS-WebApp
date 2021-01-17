@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>AutoBliss</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Website Template by gettemplates.co" />
+	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="gettemplates.co" />
+
+	<!-- 
+	//////////////////////////////////////////////////////
+
+	FREE HTML5 TEMPLATE 
+	DESIGNED & DEVELOPED by FreeHTML5.co
+		
+	Website: 		http://freehtml5.co/
+	Email: 			info@freehtml5.co
+	Twitter: 		http://twitter.com/fh5co
+	Facebook: 		https://www.facebook.com/fh5co
+
+	//////////////////////////////////////////////////////
+	 -->
+
+  	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet"> -->
+	<!-- <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i" rel="stylesheet"> -->
+	
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+
+	<!-- Flexslider  -->
+	<link rel="stylesheet" href="css/flexslider.css">
+
+	<!-- Owl Carousel  -->
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/styles.css">
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+	</head>
+	<body>
+		
+	<div class="fh5co-loader"></div>
+	
+	<div id="page">
+	<nav class="fh5co-nav" role="navigation">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 col-xs-2">
+					<div id="fh5co-logo"><a href="main">AutoBliss</a></div>
+				</div>
+				<div class="col-md-5 col-xs-5 text-center menu-1">
+					<ul>
+						<li><a href="product">Products</a></li>
+						<li><a href="oficina">Car-shops</a></li>
+						<li><a href="about">About</a></li>
+						<li class="has-dropdown">
+							<a href="services">Services</a>
+						</li>
+						<li><a href="contact">Contact</a></li>
+					</ul>
+				</div>
+				<div class="col-md-3 col-xs-4 text-right hidden-xs menu-2">
+					<ul>
+						<li class="search">
+							<form action="/search" method="post">
+								<div class="input-group">
+									<input type="text" name="query" id="searchQuery" placeholder="Search..">
+									<span class="input-group-btn">
+										<button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+									</span>
+								</div>
+							</form>
+						</li>
+						<li class="shopping-cart"><a href="cart" class="cart"><span><small>{{num}}</small><i class="icon-shopping-cart"></i></span></a></li>
+						<li class="has-dropdown"><a href="#"><span><i class="icon-cog"></i></span></a>
+							<ul class="dropdown">
+								{% if auth %}
+								<li><a href="user">Profile</a></li>
+								<li><a href="index">{{login}}</a></li>
+								{% else %}
+								<li><a href="index">{{login}}</a></li>
+								{% endif %}
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+		</div>
+	</nav>
+
+	<header id="fh5co-header" class="fh5co-cover fh5co-cover-sm" role="banner" style="background-image:url(images/Spare-Parts-2.jpg);">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2 text-center">
+					<div class="display-t">
+						<div class="display-tc animate-box" data-animate-effect="fadeIn">
+							<h1>Product Details</h1>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	
+	<div id="fh5co-product">
+		<div class="container">
+			<div class="row">
+				
+                <form method="get">
+                    <div class="form-group">
+                        
+                        <input hidden type="name" name="pid" value="{{pid}}">
+
+                        <input type="name" class="form-control" name="name" placeholder="Nome da Peça" value="{{productname}}">
+                        <label for="name" class="sr-only">Nome da Peça</label>
+
+                        <input type="text" name="description" class="form-control" placeholder="Descrição" value="{{description}}">
+                        <label for="description" class="sr-only">Descrição</label>
+
+                        <input type="text" name="country" class="form-control" placeholder="País" value="{{country}}">
+                        <label for="country" class="sr-only">País</label>
+
+                        <input type="text" name="brand" class="form-control" placeholder="Marca" value="{{marca}}">
+                        <label for="brand" class="sr-only">Marca</label>
+
+                        <input type="text" name="model" class="form-control" placeholder="Modelo" value="{{modelo}}">
+                        <label for="model" class="sr-only">Modelo</label>
+
+                        <input type="text" name="condition" class="form-control" placeholder="Condição" value="{{cond}}">
+                        <label for="condition" class="sr-only">Condição</label>
+
+                        <input type="number" name="price" class="form-control" placeholder="Preço" value="{{price}}">
+                        <label for="price" class="sr-only">Preço</label>
+
+                        <input type="number" name="quantity" class="form-control" placeholder="Quantidade" value="{{unidades}}">
+                        <label for="quantity" class="sr-only">Quantidade</label>
+
+                        <input type="number" name="makerId" class="form-control" placeholder="Código Fabricante" value="{{makerId}}">
+                        <label for="makerId" class="sr-only">Código Fabricant</label>
+
+                        <input type="text" name="ean" class="form-control" placeholder="EAN" value="{{ean}}">
+                        <label for="ean" class="sr-only">EAN</label>
+                    </div>
+                    <button type="submit" formaction="/updateVendorPart"
+                        class="btn btn-default btn-block">Atualizar</button>
+                </form>
+
+					
+			</div>
+		</div>
+	</div>
+
+	<footer id="fh5co-footer" role="contentinfo">
+		<div class="container">
+			<div class="row row-pb-md">
+				<div class="col-md-4 fh5co-widget">
+					<h3>AutoBliss</h3>
+					<p>A AutoBliss é uma aplicação desenvolvida no âmbito da unidade corricular
+						de Análise e Modelação de Sistemas, do curso Engenharia de Computadores e 
+						Telemática da Universidade de Aveiro.
+					</p>
+				</div>
+				<div class="col-md-2 col-sm-4 col-xs-6 col-md-push-1">
+					<ul class="fh5co-footer-links">
+						<li><a href="about">About</a></li>
+						<li><a href="contact">Contact</a></li>
+						<li><a href="product">Shop</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="row copyright">
+				<div class="col-md-12 text-center">
+					<p>
+						<small class="block">&copy; 2020. All Rights Reserved.</small> 
+					</p>
+					<p>
+						<ul class="fh5co-social-icons">
+							<li><a href="#"><i class="icon-twitter"></i></a></li>
+							<li><a href="#"><i class="icon-facebook"></i></a></li>
+							<li><a href="#"><i class="icon-linkedin"></i></a></li>
+							<li><a href="#"><i class="icon-dribbble"></i></a></li>
+						</ul>
+					</p>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+	</div>
+
+	<div class="gototop js-top">
+		<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+	</div>
+	
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Carousel -->
+	<script src="js/owl.carousel.min.js"></script>
+	<!-- countTo -->
+	<script src="js/jquery.countTo.js"></script>
+	<!-- Flexslider -->
+	<script src="js/jquery.flexslider-min.js"></script>
+	<!-- Main -->
+	<script src="js/main.js"></script>
+
+	</body>
+</html>
