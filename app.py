@@ -90,6 +90,7 @@ class HelloWorld(object):
       #print(res.json()['parts']) # arrray de produtos
 
       tparams = {
+        'products': res.json()['parts'],
         'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
         'auth': True if cherrypy.session['auth'] else False,
         'login': "Log Out" if cherrypy.session['auth'] else "Log In",
