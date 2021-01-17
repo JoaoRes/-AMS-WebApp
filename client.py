@@ -25,6 +25,16 @@ class Product:
         self.comments = comments
         self.img = img
 
+class Shop:
+    def __init__(self, name, open, close, location, days, email, img):
+        self.name = name
+        self.open = open
+        self.close = close
+        self.location = location
+        self.days = days
+        self.email = email
+        self.img = img
+
 
 def fillDataBase(db):
     name = "Wheel Dine"
@@ -169,3 +179,38 @@ def fillDataBase(db):
     p = Product(name, price, info0, info1, country, brand, model, weight, unidades, cond, comments, img)
     
     db.append(p)
+
+
+def fillShops(db):
+        name = "AMG car-shop"
+        op = "9:00"
+        close = "19:00"
+        location = "Avenida Sta Joana, Nº123, Aveiro"
+        days = "segunda-sexta"
+        email = "amg@ua.pt"
+        img = 'images/amg.png'
+        c = Shop(name, op, close, location, days, email, img)
+        
+        db.append(c)
+
+        name = "Uptown Motorworkers"
+        op = "9:00"
+        close = "20:00"
+        location = "Avenida São Pedro, Nº124, Porto"
+        days = "segunda-sábado"
+        email = "up@hotmail.com"
+        img = 'images/up.jpg'
+        c = Shop(name, op, close, location, days, email, img)
+        
+        db.append(c)
+
+        name = "Alliance Repair shop"
+        op = "10:00"
+        close = "18:00"
+        location = "Avenida São Carlos, Nº14, Lisboa"
+        days = "segunda-quinta"
+        email = "all@gmail.com"
+        img = 'images/all.jpeg'
+        c = Shop(name, op, close, location, days, email, img)
+        
+        db.append(c)

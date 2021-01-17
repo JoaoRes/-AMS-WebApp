@@ -142,7 +142,7 @@
 					</div>
 				</div>
 				<div class="row">
-					{% for p in products %}
+					{% for p in shops %}
 					<div class="col-md-4 text-center animate-box">
 						<div class="product">
 							
@@ -151,14 +151,11 @@
 								<!--link para a imagem está na variável {{p['img']}} == images/jante.jpg-->
 								<div class="inner">
 									<p>
-										<a href="/additem?pname={{p['name']}}" class="icon"><i class="icon-shopping-cart"></i></a>
-										<a href="/single?pn={{p['name']}}" class="icon"><i class="icon-eye"></i></a>
-										<a href="#" class="icon"><i class="icon-bell"></i></a>
+										<a href="/singleShop?sn={{p['name']}}" class="icon"><i class="icon-eye"></i></a>
 									</p>
 								</div>
 								<div class="desc">
 									<h3><a href="single.html">{{p['name']}}</a></h3>
-									<span class="price">${{p['price']}}</span>
 								</div>
 								<br><br><br><br>
 
@@ -170,6 +167,12 @@
 				</div>
 			</div>
 		</div>
+
+		{% if errors %}
+		<script>
+			alert("You must fill every field in the form");
+		</script>
+		{% endif %}
 
 		<footer id="fh5co-footer" role="contentinfo">
 			<div class="container">

@@ -12,6 +12,10 @@ clientDatabase = []
 #lista com todas as informações de todos os produtos
 productsDatabase = []
 
+shopsDatabase = []
+fillShops(shopsDatabase)
+
+
 fillDataBase(productsDatabase)
 
 # The absolute path to this file's base directory:
@@ -172,14 +176,20 @@ class HelloWorld(object):
       return self.render('register.html', tparams)
     
     @cherrypy.expose
-    def oficina(self):
+    def oficina(self, fname=None, lname=None, email=None, subject=None, message=None):
+      errors = False
+      if fname == "" or lname == "" or email == "" or subject == "" or message == "":
+        errors = True
+
       tparams = {
+        'errors': errors,
+        'shops': shopsDatabase,
         'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
         'auth': True if cherrypy.session['auth'] else False,
         'login': "Log Out" if cherrypy.session['auth'] else "Log In"
       }
       return self.render('oficina.html', tparams)
-    
+  
     @cherrypy.expose
     def testlogin(self, email=None, password=None):
       for client in clientDatabase:
@@ -244,6 +254,31 @@ class HelloWorld(object):
       }
       
       return self.render('single.html', tparams)
+
+
+    @cherrypy.expose
+    def singleShop(self, sn=None):
+      if not cherrypy.session['auth']:
+        raise cherrypy.HTTPRedirect("/oficina")
+      for p in shopsDatabase:
+        if sn == p.name:
+          tparams = {
+            'name': p.name,
+            'open': p.open,
+            'close': p.close,
+            'location': p.location,
+            'days': p.days,
+            'email': p.email,
+            'imgsrc': p.img,
+            'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+            'auth': True if cherrypy.session['auth'] else False,
+            'login': "Log Out" if cherrypy.session['auth'] else "Log In"
+          }
+          return self.render('singleShop.html', tparams)
+      return None
+
+
+
 
     @cherrypy.expose
     def subNotification(self, pid):
