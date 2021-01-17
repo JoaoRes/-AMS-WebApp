@@ -36,6 +36,7 @@ conf = {
              "tools.staticdir.dir": "fonts" },
 }
 
+apiDomain = 'https://dry-meadow-84562.herokuapp.com/api'
 
 class HelloWorld(object):
     def __init__(self):
@@ -59,6 +60,7 @@ class HelloWorld(object):
     @cherrypy.expose
     def login(self):
       cherrypy.session['auth'] = True
+      cherrypy.session['role'] = 'vendor'
       cherrypy.session['productsCar'] = []
       raise cherrypy.HTTPRedirect("/product")
 
@@ -190,28 +192,49 @@ class HelloWorld(object):
 
     
     @cherrypy.expose
-    def single(self, pn=None):
-      for p in productsDatabase:
-        if pn == p.name:
-          tparams = {
-            'productname': p.name,
-            'price': p.price,
-            'productinfo': p.info0,
-            'productinfo2': p.info1,
-            'country': p.country,
-            'marca': p.brand,
-            'modelo': p.model,
-            'peso': p.weight,
-            'unidades': p.unidades,
-            'cond': p.cond,
-            'comments': p.comments,
-            'imgsrc': p.img,
-            'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
-            'auth': True if cherrypy.session['auth'] else False,
-            'login': "Log Out" if cherrypy.session['auth'] else "Log In"
-          }
-          return self.render('single.html', tparams)
-      return None
+    def single(self, pid):
+      if 'auth' not in cherrypy.session:
+       cherrypy.session['auth'] = False
+      
+      pReq = requests.post(apiDomain+'/product/part', json={'id':pid})
+      p = pReq.json()['part']
+
+      cReq = requests.post(apiDomain+'/product/comments', json={'id':pid})
+      c = cReq.json()['comments']
+      
+      tparams = {
+        'pid':pid,
+        'productname': p['name'],
+        'price': p['price'],
+        'productinfo': p['description'],
+        'country': p['country'],
+        'marca': p['brand'],
+        'modelo': p['model'],
+        #'peso': p['weight'],
+        'unidades':int(p['quantity']),
+        'cond': p['condition'],
+        'imgsrc': p['imgUrl'],
+        #'comments': c,
+        'num': len(cherrypy.session['productsCar']) if cherrypy.session['auth'] else 0,
+        'auth': True if cherrypy.session['auth'] else False,
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In"
+      }
+      
+      return self.render('single.html', tparams)
+
+    @cherrypy.expose
+    def subNotification(self, pid):
+      if 'auth' not in cherrypy.session:
+       cherrypy.session['auth'] = False
+      
+      #redirects to login page
+      if not cherrypy.session['auth']:
+        raise cherrypy.HTTPRedirect('/')
+      
+      #needs auth
+      #sReq= requests.put(apiDomain+'/subscription', json={'partId':pid}, headers={"Authorization":cherrypy.session['token']})
+      
+      raise cherrypy.HTTPRedirect('/single?pid='+pid)   
 
     @cherrypy.expose
     def additem(self, pid=None):

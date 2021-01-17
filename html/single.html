@@ -155,6 +155,9 @@
 							<p>
 								<a href="/additem?pid={{pid}}" class="btn btn-primary btn-outline btn-lg">Add to Cart</a>
 							</p>
+							<p>
+								<a href="/subNotification?pid={{pid}}" class="btn btn-primary btn-outline btn-lg">Notify me of changes</a>
+							</p>							
 						</div>
 					</div>
 				</div>
@@ -206,7 +209,8 @@
 											<blockquote>
 												<form action="/addComment" method="post">
 													<input hidden type="number" name="pid" value="{{pid}}">
-													<input type="text" name="value" placeholder="Adiciona um Comentario">
+													<input type="text" class="form-control" name="value" placeholder="Comentario">
+													
 													<input type="submit" value="Enviar">
 												</form>
 											</blockquote>
