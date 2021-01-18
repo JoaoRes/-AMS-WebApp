@@ -374,7 +374,13 @@ class HelloWorld(object):
       partsReq= requests.get(apiDomain+'/product/vendorProducts',headers={"Authorization":cherrypy.session['token']})
       ps = partsReq.json()['parts']
 
-      return self.render('vendor.html', {'products':ps})
+      tparams = {
+        'num': len(cherrypy.session['productsCar']),
+        'login': "Log Out" if cherrypy.session['auth'] else "Log In",
+        'auth': True if cherrypy.session['auth'] else False,
+        'products': ps
+      }
+      return self.render('vendor.html', tparams)
 
     @cherrypy.expose
     def edit(self, pid):
