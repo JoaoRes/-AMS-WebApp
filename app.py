@@ -155,6 +155,17 @@ class HelloWorld(object):
       authReq = requests.post(apiDomain+'/auth/login', json={'email':email, 'password':password})
       data = authReq.json()
 
+      if authReq.status_code == 400 or authReq.status_code == 409:
+        tparams = {
+        'errors': True,
+        'num': 0,
+        'auth': False,
+        'login': "Log In",
+        'role': ''
+        }
+        return self.render('login.html', tparams)
+      
+
       cherrypy.session['auth'] = True
       cherrypy.session['token'] = data['authToken']
       cherrypy.session['role'] = data['user']['role']
